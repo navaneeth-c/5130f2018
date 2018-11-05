@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hashpass</title>
+    <style type="text/css">
+
+
+      /* body {
+        margin: 0;
+        padding: 0;
+        width: 332px;
+        font-family: sans-serif;
+        font-size: 0.9em;
+        color: #333;
+      } */
+
+      input {
+        display: block;
+        box-sizing: border-box;
+        width: 250px;
+        height: 35px;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        padding: 8px 12px;
+        margin: 16px;
+        outline-style: none;
+        line-height: 20px;
+        font-size: 1.2em;
+      }
+
+      input:focus {
+        border-color: coral;
+      }
+
+      input, p {
+        margin: 16px;
+      }
+
+      .top-margin {
+        margin-top: 4px;
+      }
+
+      .bottom-margin {
+        margin-bottom: 4px;
+      }
+
+      .disabled {
+        color: #ccc;
+      }
+
+      input.disabled {
+        font-style: italic;
+      }
+
+      .error {
+        color: #c00;
+      }
+    </style>
+    <script type="text/javascript" src="popup.js"></script>
+  </head>
+  <body>
+    <p class="small-bottom-margin">Domain:</p>
+    <input id="domain" class="top-margin" type="text" />
+    <p class="small-bottom-margin">Secret Key/ Master Password:</p>
+    <input id="key" class="top-margin" type="password" />
+    <p class="small-bottom-margin">Hash Password Generated:</p>
+    <input id="hash" class="top-margin" type="text" readonly="true" />
+    <p id="message">&nbsp;</p>
+  </body>
+</html>
