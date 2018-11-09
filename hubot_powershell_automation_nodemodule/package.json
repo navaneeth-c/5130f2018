@@ -1,0 +1,30 @@
+{
+  "name": "hubot-powershell",
+  "description": "Module for running powershell inside hubot",
+  "version": "1.0.0",
+  "author": "Navaneeth Chandrasekaran",
+  "license": "ISC",
+  "dependencies": {
+    "coffee-script": "^1.10.0",
+    "node-powershellcore": "^1.0.0",
+    "azure-keyvault": "^3.0.4",
+    "ms-rest-azure": "^2.5.7",
+    "adal-node": "^0.1.17"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "co": "^4.6.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-release": "^0.13.0",
+    "hubot": "^2.18.0",
+    "hubot-test-helper": "^1.4.4",
+    "matchdep": "^1.0.1",
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "main": "index.coffee"
+}
