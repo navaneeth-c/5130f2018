@@ -14,7 +14,7 @@
 })();
 
 // The hashedPasswording roundsDifficulty.
-// 2 ^ roundsDifficulty rounds of SHA-256 will be computed.
+// 2 ^ roundsDifficulty permutations of SHA-256 will be computed.
 var roundsDifficulty = 16;
 
 $(function() {
@@ -32,12 +32,12 @@ $(function() {
         $('#message').addClass('error').text(err);
       };
 
-      // to check whether we got the right tab
+      // Make sure we got the tab.
       if (tabs.length !== 1) {
         return printError('Can not find the active tab');
       }
 
-      // find the domain url
+      // Get the domain-url.
       var domain-url = null;
       var matches = tabs[0].url.match(/^http(?:s?):\/\/([^/]*)/);
       if (matches) {
@@ -46,12 +46,12 @@ $(function() {
         return printError('Unable to find the domain url');
       }
       if (/^http(?:s?):\/\/chrome\.google\.com\/webstore.*/.test(tabs[0].url)) {
-        // Technical reason: Chrome prevents content scripts from running in the app gallery.
+        //Chrome does not allow the extension to fetch the url
         return printError('This extension will not work on google chrome');
       }
       $('#domain-url').val(domain-url);
 
-      // have to design the content_script. It is planned for the next submission
+      // Run the content script to register the message handler.
       chrome.tabs.executeScript(tabs[0].id, {
         file: 'content_script.js'
       }, function() {
@@ -68,14 +68,38 @@ $(function() {
               $('#message').html('<strong>TIP:</strong> Select a password field first.');
             }
 
-            // This function will be called whenever the master key changes.
+            // Called whenever the masterKey changes.
             var update = function() {
-              // Compute the encryption of the password using a hasing function. Yet to determine the hashing function
-              //Incomplete
+              var masterKey = $('#masterKey').val();
+              domain-url = $('#domain-url').val().replace(/^\s+|\s+$/g, '').toLowerCase();
+
+              var permutations = Math.pow(2, roundsDifficulty);
+              var bits = domain-url + '/' + masterKey;
+              for (var i = 0; i < permutations; i += 1) {
+                bits = sjcl.hashedPassword.sha256.hashedPassword(bits);
+              }
+
+              var hashedPassword = sjcl.codec.base64.fromBits(bits).slice(0, 16);
+              if (!passMode) {
+                $('#hashedPassword').val(hashedPassword);
+              }
+              return hashedPassword;
+            };
+
+            // If not in password mode then the debouncedUpdate is used
+            var timeout = null;
+            var debouncedUpdate = function() {
+              if (timeout !== null) {
+                clearInterval(timeout);
+              }
+              timeout = setTimeout((function() {
+                update();
+                timeout = null;
+              }), 100);
             };
 
             if (passMode) {
-              // This peace of code looks for the ENTER key
+              // Listen for the Enter masterKey.
               $('#domain-url, #masterKey').masterKeydown(function(e) {
                 if (e.which === 13) {
                   // Try to fill the selected password field with the hashedPassword.
@@ -83,7 +107,7 @@ $(function() {
                       type: 'hashedPasswordpassFillPasswordField',
                       hashedPassword: update()
                     }, function(response) {
-                      // If successful, close the popup.
+                      // If completed successfully then close the popup.
                       if (response.type === 'close') {
                         window.close();
                       }
@@ -92,6 +116,16 @@ $(function() {
                 }
               });
             }
+
+            if (!passMode) {
+              // Register the update handler.
+              $('#domain-url, #masterKey').bind('propertychange change masterKeyup input paste', debouncedUpdate);
+
+              // Update the hashedPassword right away.
+              debouncedUpdate();
+            }
+
+            // Focus the text field.
             $('#masterKey').focus();
           }
         );
