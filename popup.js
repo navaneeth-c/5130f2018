@@ -57,7 +57,7 @@ $(function() {
       }, function() {
         // Check if a password field is selected.
         chrome.tabs.sendMessage(tabs[0].id, {
-            type: 'hashedPasswordpassCheckIfPasswordField'
+            type: 'checkForPass'
           }, function(response) {
             // Different user interfaces depending on whether a password field is in focus.
             var passMode = (response.type === 'password');
@@ -104,7 +104,7 @@ $(function() {
                 if (e.which === 13) {
                   // Try to fill the selected password field with the hashedPassword.
                   chrome.tabs.sendMessage(tabs[0].id, {
-                      type: 'hashedPasswordpassFillPasswordField',
+                      type: 'fillPass',
                       hashedPassword: update()
                     }, function(response) {
                       // If completed successfully then close the popup.
