@@ -1,29 +1,28 @@
 'use strict';
 
-// To make sure we are in strict mode.
+// Make sure we are in strict mode.
 (function() {
-  var sMode = false;
+  var strictMode = false;
   try {
     NaN = NaN;
   } catch (err) {
-    sMode = true;
+    strictMode = true;
   }
-  if (!sMode) {
-    throw 'Can not activate strict mode.';
+  if (!strictMode) {
+    throw 'Unable to activate strict mode.';
   }
 })();
 
-// The content script should be execute
+// Make sure the content script is only run once on the page.
 if (!window.hashpassLoaded) {
   window.hashpassLoaded = true;
 
-  // Stores a document inside of which activeElement is located.
   var activeDoc = document;
 
-  // Register the message handler.
+  // Message handler.
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      // Convert the parameter to lowercase
+      // Trims the attribute and converts it to lowercase.
       var toLower = function(attr) {
         return attr.replace(/^\s+|\s+$/g, '').toLowerCase();
       };
@@ -48,6 +47,28 @@ if (!window.hashpassLoaded) {
         }
         return false;
       };
+
+      // To make sure if the password field is selected or not
+      if (request.type === 'checkForPass') {
+        activeDoc = getactiveDoc();
+        if (activeDoc && isPasswordInput(activeDoc.activeElement)) {
+          sendResponse({ type: 'password' });
+          return;
+        }
+        sendResponse({ type: 'not-password' });
+        return;
+      }
+
+      // Automatically fill the password field if the enter key is selected
+      if (request.type === 'fillPass') {
+        if (isPasswordInput(activeDoc.activeElement)) {
+          activeDoc.activeElement.value = request.hash;
+          sendResponse({ type: 'close' });
+          return;
+        }
+        sendResponse({ type: 'fail' });
+        return;
+      }
     }
   );
 }
