@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mystiko</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="encrypt.js"></script>
+    <script type="text/javascript" src="sjcl.js"></script>
+    <!-- <script>
+      $('.message a').click(function(){
+     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+  });</script> -->
+
+  </head>
+  <body>
+    <h1 align="center">Password Manager</h1>
+    <div class="main-page">
+      <div class="form">
+        <form class="main-form">
+          <input id= "domain" type="text" placeholder="Domain" required>
+          <input id= "key" type="password" placeholder="Master Key" required><br>
+          <button id= "submit" type="button" onclick="update()">What is the password?</button>
+          <p class="message">Do you want to autofill your passwords? <a href="https://chrome.google.com/webstore/detail/mystiko/elgebokhcmefncfkfejmgdppipfhjgeh">Get the chrome extension</a></p>
+        </form>
+      </div>
+    </div>
+
+  </body>
+</html>
