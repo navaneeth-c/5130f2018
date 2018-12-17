@@ -27,3 +27,21 @@ If someone gets your password, it is impossible for them to backtrack to your ma
 One strategy for cracking your secret key is to try hashing all English words, for example. This is called a *dictionary attack*. An attacker might even try to pre-compute the hashes of all English words and other common passwords. Then they could simple look up hashes in this hash table to crack them. The table in this attack is called a *rainbow table*.
 
 A brute force attack is practically impossible with the current computational power available.
+
+
+
+## References
+
+1. https://www.linkedin.com/pulse/serve-static-files-from-docker-via-nginx-basic-example-arun-kumar/
+2. https://hub.docker.com/r/navaneethcsiva/iws/
+3. https://crypto.stanford.edu/sjcl/
+4. https://github.com/bitwiseshiftleft/sjcl
+5. https://docker-curriculum.com/
+6. https://medium.freecodecamp.org/how-to-create-a-chrome-extension-part-1-ad2a3a77541
+7. https://www.sitepoint.com/create-chrome-extension-10-minutes-flat/
+8. https://usersnap.com/blog/develop-chrome-extension/
+9. https://www.producthunt.com/posts/hashpass
+10. http://dennisspan.com/deploying-google-chrome-extensions-using-group-policy/
+11. https://www.itninja.com/question/how-to-package-and-deploy-chrome-extension
+12. http://www.adambarth.com/experimental/crx/docs/external_extensions.html
+13. https://circleci.com/blog/continuously-deploy-a-chrome-extension/
